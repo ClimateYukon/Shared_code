@@ -1,4 +1,4 @@
-import rasterstats, os , glob
+import os , glob, json
 from rasterstats import point_query
 import geopandas as gpd
 import pandas as pd
@@ -20,7 +20,7 @@ shps = [gpd.read_file(f) for f in shp_ls ] # here we are opening each shapefile 
 
 # shps = [] #create an empty list
 # for shp in shp_ls :    #loop through the filename in the shapefile list
-#		shps.append(gpd.read_file(shp)) #open the shapefile and store the object in the list
+#       shps.append(gpd.read_file(shp)) #open the shapefile and store the object in the list
 
 # That is where the magic happens, that is called a dictionnary comprehension except this one is fancy as the
 # values are made of a list comprehension
@@ -37,12 +37,15 @@ df = pd.DataFrame.from_dict( dic , orient='index' )
 # here I just set the columns name with yet another list comprehension grabing the filename from the shp_ls to have decent column name
 df.columns = [ os.path.basename( shp ) for shp in shp_ls ] 
 
-#just saving it as csv, if output path doesnt exist it will crash the code that is why we check that on line 11-12
-#saying if path doesnt exist well create it
+# just saving it as csv, if output path doesnt exist it will crash the code that is why we check that on line 11-12
+# saying if path doesnt exist well create it
 df.to_csv( os.path.join( output_path ,'extract_points_result.csv' ))
 
-#here we get into the tricky things, its pretty advanced
+# here we get into the tricky things, its pretty advanced
 # json.load is a hack to handle the list stored as a string in the datadrame.. it is weird and hacky but it works
 # we use numpy (np) to take the mean of the list and we apply it to the full dataframe with applymap
-df2 = df.applymap(lambda x: np.mean(json.loads(x))
+
+#df2 = df.applymap(lambda x:np.mean(json.loads(x))) #issue arise only when saved as a csv (creates str(LIST)for some reason)
+df2 = df.applymap(lambda x: np.mean( x ))
+
 df2.to_csv(os.path.join( output_path ,'extract_points_result_mean.csv'))
