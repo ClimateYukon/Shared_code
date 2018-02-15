@@ -22,8 +22,8 @@ shps = [gpd.read_file(f) for f in shp_ls ] # here we are opening each shapefile 
 # it is equivalent to :
 
 # shps = [] #create an empty list
-# for shp in shp_ls :    #loop through the filename in the shapefile list
-#       shps.append(gpd.read_file(shp)) #open the shapefile and store the object in the list
+# for f in shp_ls :    #loop through the filename in the shapefile list
+#       shps.append(gpd.read_file(f)) #open the shapefile and store the object in the list
 
 # That is where the magic happens, that is called a dictionnary comprehension except this one is fancy as the
 # values are made of a list comprehension
