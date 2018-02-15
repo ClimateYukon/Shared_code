@@ -7,9 +7,9 @@ import geopandas as gpd
 import pandas as pd
 import numpy as np
 
-shp_folder = "E:/Training/Arctic/Piia_data/ASMR2_data/AMSR2_data_folders_training_/test01_2016_/"
-tif_folder = "E:/Training/Arctic/Piia_data/ASMR2_data/AMSR2_data_folders_training_/test01_2016_/"
-output_path = "E:/Training/Arctic/Piia_data/ASMR2_data/AMSR2_data_folders_training_/test01_2016_/Outputs"
+shp_folder = ""
+tif_folder = ""
+output_path = ""
 
 if not os.path.exists( output_path ):
     os.mkdir( output_path )
