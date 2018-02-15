@@ -1,3 +1,6 @@
+''' The aim is to extract values from a raster using 4 different shapefiles containing points, then save a csv with all values
+and another with the mean for each shapefiles. relies heavily on dictionnary comprehension and rasterstats'''
+
 import os , glob, json
 from rasterstats import point_query
 import geopandas as gpd
@@ -49,3 +52,9 @@ df.to_csv( os.path.join( output_path ,'extract_points_result.csv' ))
 df2 = df.applymap(lambda x: np.mean( x ))
 
 df2.to_csv(os.path.join( output_path ,'extract_points_result_mean.csv'))
+
+
+
+
+
+
