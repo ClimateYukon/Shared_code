@@ -36,6 +36,8 @@ def check_n_start(lu) :
 if __name__ == '__main__':    
     import requests, os, itertools
     from multiprocessing import Pool
+    import zipfile
+    
     '''hardcording is ugly, however since it is a one off kind of thing, that was easier than writing a web crawler
     to try to find the right structure, still though... ugly'''
     
@@ -43,7 +45,7 @@ if __name__ == '__main__':
     ds= ['n6250']
     yr = [ str(i) for i in range(2012,2019)]
     ext = ['Arctic' , 'Arctic180']
-    month = ['jan' , 'feb' , 'mar', 'apr' , 'jun' , 'jul' , 'aug' , 'sep' , 'oct' , 'nov' , 'dec']
+    month = ['jan' , 'feb' , 'mar', 'apr' , 'may' , 'jun' , 'jul' , 'aug' , 'sep' , 'oct' , 'nov' , 'dec']
 
     base_out_path = '/home/UA/jschroder/Piia'
 
@@ -57,6 +59,13 @@ if __name__ == '__main__':
     _ = pool.map( check_n_start, list_url )
     pool.close()
     pool.join()
+    
+    zf = zipfile.ZipFile(os,path.join( base_out_path , "full_extract.zip", "w")
+    for dirname, subdirs, files in os.walk("base_out_path"):
+        zf.write(dirname)
+        for filename in files:
+        zf.write(os.path.join(dirname, filename))
+    zf.close()
     
     # for lu in list_url :
     #     request = requests.get( lu )
