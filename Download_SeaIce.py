@@ -1,4 +1,5 @@
 def get_files(url):
+    '''this function open the url and extract the 'tif' urls'''
     from bs4 import BeautifulSoup
 
     soup = BeautifulSoup(requests.get(url).text,"html.parser")
@@ -6,6 +7,10 @@ def get_files(url):
     return [os.path.join(url , a['href']) for a in _lnk if '.tif' in a['href']]
         
 def download_file(ls):
+    '''This function download a list of url, here those are the tifs produced by get_files,
+    it save it in the same structure than the original for more clarity, also since the multiprocessing
+    returned an error I added a test to be sure that all files are in there.'''
+    
     import wget
     id_path = os.path.join( *ls[0].split('/')[-5:-1] )
     out_path = os.path.join(base_out_path , id_path)
@@ -16,8 +21,13 @@ def download_file(ls):
     for i in ls : 
         if not os.path.exists( os.path.join(out_path , os.path.basename( i ))):
             wget.download(i , out= out_path)
-        else : print( 'good to go, files is here'  )
+        else : print( 'File already exist'  )
+        
 def check_n_start(lu) :
+    '''A little helper to make multiprocessing work, this check if the url passed exists or not. To do so we 
+    request the url and check the code returned by the server, if code = 200, the url exists and we can go ahead
+    with extraction of tif url and download of the files'''
+    
     request = requests.get( lu )
     if request.status_code == 200:
         download_file( get_files( lu ) )
@@ -26,6 +36,8 @@ def check_n_start(lu) :
 if __name__ == '__main__':    
     import requests, os, itertools
     from multiprocessing import Pool
+    '''hardcording is ugly, however since it is a one off kind of thing, that was easier than writing a web crawler
+    to try to find the right structure, still though... ugly'''
     
     # ds = ['n10m' , 'n3125' , 'n6250' , 's3125' , 's6250']
     ds= ['n6250']
