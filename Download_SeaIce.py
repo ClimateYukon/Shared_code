@@ -23,15 +23,16 @@ def download_file(ls):
             wget.download(i , out= out_path)
         else : print( 'File already exist'  )
         
-def check_n_start(lu) :
+def check_n_start( URL ) :
     '''A little helper to make multiprocessing work, this check if the url passed exists or not. To do so we 
     request the url and check the code returned by the server, if code = 200, the url exists and we can go ahead
     with extraction of tif url and download of the files'''
     
-    request = requests.get( lu )
+    request = requests.get( URL )
     if request.status_code == 200:
-        download_file( get_files( lu ) )
-    else : print('not a viable url')    
+        download_file( get_files( URL ) )
+        
+    else : print('URL doesn't exist')    
 
 if __name__ == '__main__':    
     import requests, os, itertools
