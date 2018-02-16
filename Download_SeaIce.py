@@ -60,7 +60,7 @@ if __name__ == '__main__':
     pool.close()
     pool.join()
     
-    zf = zipfile.ZipFile(os,path.join( base_out_path , "full_extract.zip", "w")
+    zf = zipfile.ZipFile(os,path.join( base_out_path , "full_extract.zip"), "w")
     for dirname, subdirs, files in os.walk("base_out_path"):
         zf.write(dirname)
         for filename in files:
